@@ -2,7 +2,8 @@
 
 import $ from 'jquery';
 
-//const apiKey = eFTo0b1PFgN87Cn0Wl6ZPdTnMAfnJCXTwCNlBMDx;
+// API key for Joseph
+// const apiKey = 'URhY1SlMNkUUZlzkDFcx9VLPJH5sVEhegRcLc7pA';
 
 // Resource Endpoint - https://developer.np
 
