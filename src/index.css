@@ -1,0 +1,51 @@
+* {
+  box-sizing: border-box;
+}
+
+img {
+  height: 180px;
+}
+
+body {
+  text-align: center;
+  font-family: sans-serif;
+}
+
+/* Customize form */
+
+fieldset legend {
+  font-size: 28px;
+  font-weight: bold;
+  padding: 10px;
+}
+
+fieldset button {
+  border: none;
+  border-radius: 5px;
+  padding: 15px 50px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+fieldset button:hover {
+  cursor: pointer;
+  background-color: darkgray;
+}
+
+#states,
+#number-results {
+  display: block;
+  margin: 10px auto 20px;
+}
+
+ul {
+  list-style: none;
+}
+
+li {
+  max-width: 800px;
+  display: block;
+  margin: 50px auto;
+  border: 2px solid lightgray;
+  padding: 30px;
+}

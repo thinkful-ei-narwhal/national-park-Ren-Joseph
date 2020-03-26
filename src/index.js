@@ -1,15 +1,11 @@
 'use strict';
 
 import $ from 'jquery';
-
-// Resource Endpoint - https://developer.np
-
-// Query String Parameters - parkCode=acad,dena
+import './index.css';
 
 const searchURL = 'https://developer.nps.gov/api/v1/parks';
 const apiKey = 'URhY1SlMNkUUZlzkDFcx9VLPJH5sVEhegRcLc7pA';
 
-//curl -H 'X-Api-Key: INSERT-API-KEY-HERE' 'https://developer.nps.gov/api/v1/parks?parkCode=acad'
 const store = {};
 
 function formatQueryParams(params) {
@@ -20,18 +16,14 @@ function formatQueryParams(params) {
 function getParks(stateCode, maxResult=10) {
   const params = {
     stateCode: [stateCode],
-    limit: maxResult
-  };
-
-  const options = {
-    headers: new Headers({
-      "X-Api-Key": apiKey})
+    limit: maxResult,
+    api_key: apiKey,
   };
 
   const queryString = formatQueryParams(params)
   const url = searchURL + '?' + queryString;
 
-  fetch(url, options)
+  fetch(url)
     .then(response => {
       if (response.ok) {
         return response.json();
@@ -46,30 +38,22 @@ function getParks(stateCode, maxResult=10) {
 
 function renderResults(responseJson) {
   $('.display-parks').empty();
-  console.log(responseJson);
+  let data = responseJson.data;
 
-  // for (let i = 0; i < responseJson.items.length; i++){
-
-  //   // for each video object in the items 
-  //   // array, add a list item to the results 
-  //   // list with the video title, description,
-  //   // and thumbnail
-  //   $('#results-list').append(
-  //     `<li><h3>${responseJson.items[i].snippet.title}</h3>
-  //     <p>${responseJson.items[i].snippet.description}</p>
-  //     <img src='${responseJson.items[i].snippet.thumbnails.default.url}'>
-  //     </li>`
-  //   )};
-
-  // // display the results section  
-  // $('#results').removeClass('hidden');
+  for (let i = 0; i < data.length; i++){
+    $('.display-parks').append(
+      `<li><h3>${data[i].fullName}</h3>
+      <p>${data[i].description}</p>
+      <img src="${data[i].images[0].url}" alt="${data[i].images[0].altText}">
+      </li>`
+    )};
 }
 
 function handleSubmit() {
   $('form').submit(function(event) {
     event.preventDefault();
-    let stateValue = $('.states').val();
-    let numValue = $('.number-results').val();
+    let stateValue = $('#states').val();
+    let numValue = $('#number-results').val();
     getParks(stateValue, numValue);
   });
 }
