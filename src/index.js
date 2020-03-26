@@ -6,11 +6,13 @@ import './index.css';
 const searchURL = 'https://developer.nps.gov/api/v1/parks';
 const apiKey = 'URhY1SlMNkUUZlzkDFcx9VLPJH5sVEhegRcLc7pA';
 
-const store = {};
-
-function formatQueryParams(params) {
-  const items = Object.keys(params).map(key => `${key}=${params[key]}`)
-  return items.join('&');
+function handleSubmit() {
+  $('form').submit(function(event) {
+    event.preventDefault();
+    let stateValue = $('#states').val();
+    let numValue = $('#number-results').val();
+    getParks(stateValue, numValue);
+  });
 }
 
 function getParks(stateCode, maxResult=10) {
@@ -36,6 +38,11 @@ function getParks(stateCode, maxResult=10) {
     });
 }
 
+function formatQueryParams(params) {
+  const items = Object.keys(params).map(key => `${key}=${params[key]}`)
+  return items.join('&');
+}
+
 function renderResults(responseJson) {
   $('.display-parks').empty();
   let data = responseJson.data;
@@ -51,14 +58,6 @@ function renderResults(responseJson) {
     )};
 }
 
-function handleSubmit() {
-  $('form').submit(function(event) {
-    event.preventDefault();
-    let stateValue = $('#states').val();
-    let numValue = $('#number-results').val();
-    getParks(stateValue, numValue);
-  });
-}
 function main() {
   handleSubmit();
 }
