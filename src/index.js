@@ -2,33 +2,75 @@
 
 import $ from 'jquery';
 
-// API key for Joseph
-// const apiKey = 'URhY1SlMNkUUZlzkDFcx9VLPJH5sVEhegRcLc7pA';
-
 // Resource Endpoint - https://developer.np
 
 // Query String Parameters - parkCode=acad,dena
 
-//const searchURL = 'https://developer.nps.gov/api/v1/parks?parkCode=ac'
+const searchURL = 'https://developer.nps.gov/api/v1/parks';
+const apiKey = 'URhY1SlMNkUUZlzkDFcx9VLPJH5sVEhegRcLc7pA';
 
 //curl -H 'X-Api-Key: INSERT-API-KEY-HERE' 'https://developer.nps.gov/api/v1/parks?parkCode=acad'
 const store = {};
 
-function fetchApi() {}
+function formatQueryParams(params) {
+  const items = Object.keys(params).map(key => `${key}=${params[key]}`)
+  return items.join('&');
+}
 
-function pushToStore() {}
+function getParks(stateCode, maxResult=10) {
+  const params = {
+    stateCode: [stateCode],
+    limit: maxResult
+  };
 
-function getParks() {}
+  const options = {
+    headers: new Headers({
+      "X-Api-Key": apiKey})
+  };
 
-function renderResults() {}
+  const queryString = formatQueryParams(params)
+  const url = searchURL + '?' + queryString;
+
+  fetch(url, options)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error(response.statusText);
+    })
+    .then(responseJson => renderResults(responseJson))
+    .catch(err => {
+      $('#js-error-message').text(`Something went wrong: ${err.message}`);
+    });
+}
+
+function renderResults(responseJson) {
+  $('.display-parks').empty();
+  console.log(responseJson);
+
+  // for (let i = 0; i < responseJson.items.length; i++){
+
+  //   // for each video object in the items 
+  //   // array, add a list item to the results 
+  //   // list with the video title, description,
+  //   // and thumbnail
+  //   $('#results-list').append(
+  //     `<li><h3>${responseJson.items[i].snippet.title}</h3>
+  //     <p>${responseJson.items[i].snippet.description}</p>
+  //     <img src='${responseJson.items[i].snippet.thumbnails.default.url}'>
+  //     </li>`
+  //   )};
+
+  // // display the results section  
+  // $('#results').removeClass('hidden');
+}
 
 function handleSubmit() {
   $('form').submit(function(event) {
     event.preventDefault();
-    let statevalue = $('.states').val();
+    let stateValue = $('.states').val();
     let numValue = $('.number-results').val();
     getParks(stateValue, numValue);
-    console.log('working', statevalue, numValue);
   });
 }
 function main() {
