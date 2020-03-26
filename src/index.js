@@ -39,12 +39,14 @@ function getParks(stateCode, maxResult=10) {
 function renderResults(responseJson) {
   $('.display-parks').empty();
   let data = responseJson.data;
+  console.log(data);
 
   for (let i = 0; i < data.length; i++){
     $('.display-parks').append(
       `<li><h3>${data[i].fullName}</h3>
       <p>${data[i].description}</p>
       <img src="${data[i].images[0].url}" alt="${data[i].images[0].altText}">
+      <p>Visit us online <a href="${data[i].url}">here</a>!</p>
       </li>`
     )};
 }
